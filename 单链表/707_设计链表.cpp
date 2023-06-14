@@ -73,7 +73,6 @@ public:
         ListNode* tmp = cur->next;
         cur->next = cur->next->next;
         delete tmp;
-        tmp = nullptr;
         _size--;
     }
 };
