@@ -1,3 +1,5 @@
+#include<math.h>
+
 struct ListNode
 {
     int val;
@@ -7,51 +9,47 @@ struct ListNode
     ListNode(int x, ListNode *next) : val(x), next(next) {}
 };
 
-#include<math.h>
-
-class Solution 
-{
-    public:
-        ListNode *getIntersectionNode(ListNode *headA, ListNode *headB) 
+class Solution {
+private:
+    int getListLen(ListNode* head)
+    {
+        int size = 0;
+        while(head != nullptr)
         {
-            int headA_length = getLinkedListLength(headA);
-            int headB_length = getLinkedListLength(headB);
+            size++;
+            head = head->next;
+        }
+        return size;
+    }
+public:
+    ListNode *getIntersectionNode(ListNode *headA, ListNode *headB) 
+    {
+        int sizeA = getListLen(headA);
+        int sizeB = getListLen(headB);
+        int sizeDiff = abs(sizeA-sizeB);
 
-            int length_difference = abs(headA_length-headB_length);
-
-            if(length_difference != 0)
+        while(sizeDiff--)
+        {
+            if(sizeA > sizeB)
             {
-                while(length_difference--)
-                {
-                    if(headA_length > headB_length)
-                        headA = headA->next;
-                    else
-                        headB = headB->next;
-                }
+                headA = headA->next;
             }
-
-            while(headA != nullptr)
+            else
             {
-                if(headA == headB)
-                    return headA;
-                else
-                {
-                    headA = headA->next;
-                    headB = headB->next;
-                }
+                headB = headB->next;
             }
-
-            return headA;
         }
 
-        int getLinkedListLength(ListNode *head)
+        while(headA != nullptr)
         {
-            int length = 0;
-            while(head != nullptr)
+            if(headA == headB)
+                return headA;
+            else
             {
-                length++;
-                head = head->next;
+                headA = headA->next;
+                headB = headB->next;
             }
-            return length;
         }
+        return headA;
+    }
 };
